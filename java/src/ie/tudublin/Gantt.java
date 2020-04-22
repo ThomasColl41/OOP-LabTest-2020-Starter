@@ -10,7 +10,7 @@ public class Gantt extends PApplet
 {	
 	ArrayList<Task> tasks = new ArrayList<Task>();
 	Task chosen;
-	float border = width * 0.05f;
+	float border = 0;
 
 	public void settings()
 	{
@@ -36,7 +36,7 @@ public class Gantt extends PApplet
 	}
 	
 	public void mousePressed()
-	{	
+	{
 		for(int i = 0; i < tasks.size(); i++)
 		{
 			Task t = tasks.get(i);
@@ -51,7 +51,8 @@ public class Gantt extends PApplet
 				println("You chose the start of " + t);
 				chosen = t;
 			}
-			else if(mouseX >= tEnd - 20 &&
+
+			if(mouseX >= tEnd - 20 &&
 			mouseX <= tEnd &&
 			mouseY >= gap -15 &&
 			mouseY <= gap + 15)
@@ -94,9 +95,11 @@ public class Gantt extends PApplet
 		float gap;
 		int maxLines = 30;
 
+		colorMode(HSB);
 		textAlign(CENTER, CENTER);
 		stroke(255);
 		fill(255);
+		
 		for(int i = 1; i <= maxLines; i++)
 		{
 			gap = map(i, 1, maxLines, border + 100, width - border);
@@ -135,9 +138,9 @@ public class Gantt extends PApplet
 	
 	public void setup() 
 	{
-		colorMode(HSB);
 		loadTasks();
 		printTasks();
+		border = width * 0.05f;
 	}
 	
 	public void draw()
