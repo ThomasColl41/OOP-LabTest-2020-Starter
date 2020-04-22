@@ -33,7 +33,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task [end=" + end + ", start=" + start + ", task=" + task + "]";
+        return "Task [task=" + task + ", start=" + start + ", end=" + end + "]";
     }
 
     public Task(String task, int start, int end) {
