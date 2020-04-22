@@ -9,6 +9,7 @@ import processing.data.TableRow;
 public class Gantt extends PApplet
 {	
 	ArrayList<Task> tasks = new ArrayList<Task>();
+	Task chosen;
 
 	public void settings()
 	{
@@ -35,12 +36,63 @@ public class Gantt extends PApplet
 	
 	public void mousePressed()
 	{
-		println("Mouse pressed");	
+		float border = width * 0.05f;
+		println("Mouse pressed");
+		
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			Task t = tasks.get(i);
+			float gap = map(i, 0, tasks.size(), border + 30, height - border);
+			float tStart = map(t.getStart(), 1, 30, border + 100, width - border);
+			float tEnd = map(t.getEnd(), 1, 30, border + 100, width - border);
+			if(mouseX <= tStart + 20 &&
+			mouseX >= tStart &&
+			mouseY >= gap -15 &&
+			mouseY <= gap + 15)
+			{
+				println("You chose the start of " + t);
+				chosen = t;
+			}
+
+			if(mouseX >= tEnd - 20 &&
+			mouseX <= tEnd &&
+			mouseY >= gap -15 &&
+			mouseY <= gap + 15)
+			{
+				println("You chose the end of " + t);
+				chosen = t;
+			}
+		}
 	}
 
 	public void mouseDragged()
 	{
+		float border = width * 0.05f;
 		println("Mouse dragged");
+
+		if(chosen != null)
+		{
+			float tStart = map(chosen.getStart(), 1, 30, border + 100, width - border);
+			float tEnd = map(chosen.getEnd(), 1, 30, border + 100, width - border);
+			int diff = chosen.getEnd() - chosen.getStart();
+
+			if(mouseX >= tEnd + 20 && chosen.getEnd() < 30)
+			{
+				chosen.setEnd(chosen.getEnd() + 1);
+			}
+			else if(mouseX <= tEnd && mouseX > tEnd - 20 && diff > 1)
+			{
+				chosen.setEnd(chosen.getEnd() - 1);
+			}
+			else if(mouseX >= tStart && mouseX < tStart + 20 && diff > 1)
+			{
+				chosen.setStart(chosen.getStart() + 1);
+			}
+			else if(mouseX <= tStart - 20 && chosen.getStart() > 1)
+			{
+				chosen.setStart(chosen.getStart() - 1);
+			}
+		}
 	}
 
 	public void displayTasks()
